@@ -3,27 +3,15 @@
 const canvas = document.getElementById("anim_canvas");
 const ctx = canvas.getContext("2d");
 
-
-
 function getRandomCat() {
-    const catNames = [
-        "black_1.png",
-        "blue_1.png",
-        "calico_0.png",
-        "creme_0.png",
-        "creme_1.png",
-        "gold_0.png",
-        "seal_point_0.png"
-    ]
-    return catNames[Math.floor(Math.random()*catNames.length)];
+    const catNames = ["black_1.png", "blue_1.png", "calico_0.png", "creme_0.png", "creme_1.png", "gold_0.png", "seal_point_0.png"];
+    return catNames[Math.floor(Math.random() * catNames.length)];
 }
 
 const spriteImg = new Image();
 spriteImg.src = window.imgUri + "/" + getRandomCat();
 const unhappyImg = new Image();
 unhappyImg.src = window.imgUri + "/_cross.png";
-
-
 
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
@@ -142,7 +130,7 @@ let canvasYInc;
 
 // set interval handle
 let randomAnimHandle = null;
-``
+``;
 // set is range
 let isUnhappy = false;
 function animate() {
@@ -238,12 +226,12 @@ function animate() {
             canvasPosX + 2 * SPRITE_WIDTH,
             2 * SPRITE_WIDTH,
             2 * SPRITE_HEIGHT // this is for canvas
-        );        
+        );
     }
 
     currFrame++;
 
-    // update 
+    // update
     if (!isUnhappy) {
         canvasPosX += canvasXInc;
     } else {
@@ -330,24 +318,22 @@ function updateAnimationRandomDelay() {
     }, randomDelay);
 }
 
-function triggerSepcialAction(specialName) {
-    if (specialName == "unhappy") {
+function triggerSpecialAction(specialName) {
+    if (specialName === "unhappy") {
         isUnhappy = true;
-        setTimeout(function() {
+        setTimeout(function () {
             console.log("The cat has been angry for 5 sec.");
             isUnhappy = false;
         }, 5000);
         // playAnimation("word");
 
-        // // override the current animation, and cancel the current set time out, 
+        // // override the current animation, and cancel the current set time out,
         // if (randomAnimHandle !== null) {
         //     clearTimeout(randomAnimHandle);
         // }
         // // reset the next random animation again, for the just resetted handle
         // updateAnimationRandomDelay();
-
-    } else if (specialName == "rage") {
-
+    } else if (specialName === "rage") {
     }
 }
 

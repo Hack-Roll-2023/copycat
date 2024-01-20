@@ -19,10 +19,10 @@
     });
 
     function updateCopyCount(copyCount) {
-        document.querySelector(".copyCounter").textContent = `You copied ${copyCount} times`;
+        document.querySelector(".copyCounter").textContent = `Illegal external copy 😾 = ${copyCount}`;
     }
 
     function updateCopyCredit(copyCount) {
-        document.querySelector(".copyCredit").textContent = `Your copy credit ${copyCount}`;
+        document.querySelector(".copyCredit").textContent = `Your copy credit 🤫 = ${copyCount}`;
     }
 })();

@@ -178,7 +178,7 @@ class ColorsViewProvider implements vscode.WebviewViewProvider {
 			<div class="container">
 				<h1 class="title" style="font-weight: bold">Copy 📋 Cat 🐱</h1>
 				<h2 class="copyCredit">Your copy credit 🤫 = 1</h2>
-				<h2 class="copyCounter" style="font-size: 14px">Times tried to copy externally 😾 = 0</h2>
+				<h2 class="copyCounter" style="font-size: 14px">Illegal external copy 😾 = 0</h2>
 
 				
 
