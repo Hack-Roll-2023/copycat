@@ -17,7 +17,8 @@
           {
             "type": "webview",
             "id": "copycat.colorsView",
-            "name": "Copycat Colors"
+            "name": "Copycat Colors",
+            "icon": "media/copycat.svg"
           }
         ]
       },
