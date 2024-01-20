@@ -92,7 +92,6 @@ const sprite_details = {
         y_inc: 0,
     },
 
-
     // special
     word: {
         start_x: 0,
@@ -103,7 +102,7 @@ const sprite_details = {
         custom_idx_lst: [],
         x_inc: null,
         y_inc: null,
-    }
+    },
 };
 
 // parameters
@@ -125,7 +124,6 @@ let canvasYInc;
 
 // set interval handle
 let randomAnimHandle = null;
-
 
 function animate() {
     if (animRequest !== null) {
@@ -166,7 +164,7 @@ function animate() {
 
     currFrame++;
 
-    // update 
+    // update
     if (canvasXInc !== null) {
         canvasPosX += canvasXInc;
     } else {
@@ -177,7 +175,7 @@ function animate() {
     } else {
         canvasPosY += Math.random() * 10 - 5;
     }
-    
+
     if (canvasPosX < 0) {
         canvasPosX = 0;
         playAnimation("walk_down");
@@ -224,53 +222,47 @@ window.addEventListener("resize", () => {
     // animate();
 });
 
+window.addEventListener("message", (event) => {
+    const message = event.data;
+    switch (message.type) {
+        case "special": {
+            triggerSpecialAction(message.value);
+            break;
+        }
+    }
+});
 
 function get_random_action() {
-    const actions = [
-        "walk_left",
-        "walk_right",
-        "walk_up",
-        "walk_down",
-        "look_around",
-        "look_around",
-        "lay_down",
-        "lay_down"
-    ]
-    const random_action = actions[Math.floor(Math.random()*actions.length)];
-    return random_action
+    const actions = ["walk_left", "walk_right", "walk_up", "walk_down", "look_around", "look_around", "lay_down", "lay_down"];
+    const random_action = actions[Math.floor(Math.random() * actions.length)];
+    return random_action;
 }
 
 function updateAnimationRandomDelay() {
     let randomDelay = Math.random() * 10000 + 5000; // 5~15 sec
-  
+
     // Call myFunction after the random delay
-    randomAnimHandle = setTimeout(function() {
-        console.log("Gonna do this for", randomDelay/1000, "sec");
+    randomAnimHandle = setTimeout(function () {
+        console.log("Gonna do this for", randomDelay / 1000, "sec");
         playAnimation(get_random_action());
-        
+
         updateAnimationRandomDelay();
     }, randomDelay);
 }
 
-function triggerSepcialAction(specialName) {
-    if (specialName == "unhappy") {
+function triggerSpecialAction(specialName) {
+    if (specialName === "unhappy") {
         playAnimation("word");
 
-        // override the current animation, and cancel the current set time out, 
+        // override the current animation, and cancel the current set time out,
         if (randomAnimHandle !== null) {
             clearTimeout(randomAnimHandle);
         }
         // reset the next random animation again, for the just resetted handle
         updateAnimationRandomDelay();
-
-    } else if (specialName == "rage") {
-
+    } else if (specialName === "rage") {
     }
 }
 
-
-
 playAnimation(get_random_action());
-updateAnimationRandomDelay()
-
-
+updateAnimationRandomDelay();
