@@ -28,6 +28,7 @@ const sprite_details = {
         x_inc: 0,
         y_inc: 0,
     },
+
     look_around: {
         start_x: 33,
         start_y: 128,
@@ -39,7 +40,16 @@ const sprite_details = {
         y_inc: 0,
     },
 
-    lay_down: {},
+    lay_down: {
+        start_x: 33,
+        start_y: 256,
+        sprite_num: 8,
+        is_looping: false,
+        frames_per_sprite: 12,
+        custom_idx_lst: [],
+        x_inc: 0,
+        y_inc: 0,
+    },
 
     walk_left: {
         start_x: 32 * 5 + 1,
@@ -95,10 +105,14 @@ let spriteIdxLst = [];
 
 let animRequest = null;
 
-let canvasPosX = 0; //canvas.height / 2;
-let canvasPosY = 0; //canvas.width / 2;
+let canvasPosX = canvas.height / 2;
+let canvasPosY = canvas.width / 2;
 let canvasXInc;
 let canvasYInc;
+
+// set interval handle
+let randomAnimHandle = null;
+
 
 function animate() {
     if (animRequest !== null) {
@@ -137,8 +151,26 @@ function animate() {
     );
 
     currFrame++;
-    canvasPosX = Math.min(Math.max(0, canvasPosX + canvasXInc), canvas.height - 2 * SPRITE_WIDTH);
-    canvasPosY = Math.min(Math.max(0, canvasPosY + canvasYInc), canvas.width - 2 * SPRITE_HEIGHT);
+
+    // update 
+    canvasPosX += canvasXInc;
+    if (canvasPosX < 0) {
+        canvasPosX = 0;
+        playAnimation("walk_down");
+    }
+    if (canvasPosX > canvas.height - 2 * SPRITE_WIDTH) {
+        canvasPosX = canvas.height - 2 * SPRITE_WIDTH;
+        playAnimation("walk_up");
+    }
+    canvasPosY += canvasYInc;
+    if (canvasPosY < 0) {
+        canvasPosY = 0;
+        playAnimation("walk_right");
+    }
+    if (canvasPosY > canvas.width - 2 * SPRITE_HEIGHT) {
+        canvasPosY = canvas.width - 2 * SPRITE_HEIGHT;
+        playAnimation("walk_left");
+    }
     animRequest = requestAnimationFrame(animate);
 }
 
@@ -167,3 +199,37 @@ window.addEventListener("resize", () => {
     canvasPosY = Math.min(Math.max(0, canvasPosY), canvas.width - 2 * SPRITE_HEIGHT);
     // animate();
 });
+
+
+function get_random_action() {
+    const actions = [
+        "walk_left",
+        "walk_right",
+        "walk_up",
+        "walk_down",
+        "look_around",
+        "look_around",
+        "lay_down",
+        "lay_down"
+    ]
+    const random_action = actions[Math.floor(Math.random()*actions.length)];
+    return random_action
+}
+
+function updateAnimationRandomDelay() {
+    let randomDelay = Math.random() * 10000 + 5000; // 5~15 sec
+  
+    // Call myFunction after the random delay
+    setTimeout(function() {
+        console.log("Gonna do this for", randomDelay/1000, "sec");
+        playAnimation(get_random_action());
+        
+        randomAnimHandle = updateAnimationRandomDelay();
+    }, randomDelay);
+}
+
+
+playAnimation(get_random_action());
+randomAnimHandle = updateAnimationRandomDelay()
+
+

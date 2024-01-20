@@ -142,14 +142,17 @@ class ColorsViewProvider implements vscode.WebviewViewProvider {
             <h1 class="copyCounter">You copied 0 time</h1>
 			
             
+            <!--
 			<div id="buttons">
 				<button onclick="playAnimation('sit')">Sit</button>
 				<button onclick="playAnimation('look_around')">Look Around</button>
+                <button onclick="playAnimation('lay_down')">Lay Down</button>
 				<button onclick="playAnimation('walk_left')">Walk Left</button>
 				<button onclick="playAnimation('walk_right')">Walk Right</button>
 				<button onclick="playAnimation('walk_up')">Walk Up</button>
 				<button onclick="playAnimation('walk_down')">Walk Down</button>
 			</div>
+            -->
 
 			<canvas id="anim_canvas"/>
 
