@@ -28,6 +28,7 @@ const sprite_details = {
         x_inc: 0,
         y_inc: 0,
     },
+
     look_around: {
         start_x: 33,
         start_y: 128,
@@ -39,7 +40,16 @@ const sprite_details = {
         y_inc: 0,
     },
 
-    lay_down: {},
+    lay_down: {
+        start_x: 33,
+        start_y: 256,
+        sprite_num: 8,
+        is_looping: false,
+        frames_per_sprite: 12,
+        custom_idx_lst: [],
+        x_inc: 0,
+        y_inc: 0,
+    },
 
     walk_left: {
         start_x: 32 * 5 + 1,
@@ -81,6 +91,19 @@ const sprite_details = {
         x_inc: 1,
         y_inc: 0,
     },
+
+
+    // special
+    word: {
+        start_x: 0,
+        start_y: 32,
+        sprite_num: 4,
+        is_looping: true,
+        frames_per_sprite: 12,
+        custom_idx_lst: [],
+        x_inc: null,
+        y_inc: null,
+    }
 };
 
 // parameters
@@ -95,10 +118,14 @@ let spriteIdxLst = [];
 
 let animRequest = null;
 
-let canvasPosX = 0; //canvas.height / 2;
-let canvasPosY = 0; //canvas.width / 2;
+let canvasPosX = canvas.height / 2;
+let canvasPosY = canvas.width / 2;
 let canvasXInc;
 let canvasYInc;
+
+// set interval handle
+let randomAnimHandle = null;
+
 
 function animate() {
     if (animRequest !== null) {
@@ -122,6 +149,7 @@ function animate() {
     // Calculate locations based on idx
     const currX = startX + 32 * Math.floor(spriteIdx / 4);
     const currY = startY + 32 * (spriteIdx % 4);
+    // console.log(currX, currY);
 
     // Draw
     ctx.drawImage(
@@ -137,8 +165,36 @@ function animate() {
     );
 
     currFrame++;
-    canvasPosX = Math.min(Math.max(0, canvasPosX + canvasXInc), canvas.height - 2 * SPRITE_WIDTH);
-    canvasPosY = Math.min(Math.max(0, canvasPosY + canvasYInc), canvas.width - 2 * SPRITE_HEIGHT);
+
+    // update 
+    if (canvasXInc !== null) {
+        canvasPosX += canvasXInc;
+    } else {
+        canvasPosX += Math.random() * 10 - 5;
+    }
+    if (canvasYInc !== null) {
+        canvasPosY += canvasYInc;
+    } else {
+        canvasPosY += Math.random() * 10 - 5;
+    }
+    
+    if (canvasPosX < 0) {
+        canvasPosX = 0;
+        playAnimation("walk_down");
+    }
+    if (canvasPosX > canvas.height - 2 * SPRITE_WIDTH) {
+        canvasPosX = canvas.height - 2 * SPRITE_WIDTH;
+        playAnimation("walk_up");
+    }
+    canvasPosY += canvasYInc;
+    if (canvasPosY < 0) {
+        canvasPosY = 0;
+        playAnimation("walk_right");
+    }
+    if (canvasPosY > canvas.width - 2 * SPRITE_HEIGHT) {
+        canvasPosY = canvas.width - 2 * SPRITE_HEIGHT;
+        playAnimation("walk_left");
+    }
     animRequest = requestAnimationFrame(animate);
 }
 
@@ -167,3 +223,54 @@ window.addEventListener("resize", () => {
     canvasPosY = Math.min(Math.max(0, canvasPosY), canvas.width - 2 * SPRITE_HEIGHT);
     // animate();
 });
+
+
+function get_random_action() {
+    const actions = [
+        "walk_left",
+        "walk_right",
+        "walk_up",
+        "walk_down",
+        "look_around",
+        "look_around",
+        "lay_down",
+        "lay_down"
+    ]
+    const random_action = actions[Math.floor(Math.random()*actions.length)];
+    return random_action
+}
+
+function updateAnimationRandomDelay() {
+    let randomDelay = Math.random() * 10000 + 5000; // 5~15 sec
+  
+    // Call myFunction after the random delay
+    randomAnimHandle = setTimeout(function() {
+        console.log("Gonna do this for", randomDelay/1000, "sec");
+        playAnimation(get_random_action());
+        
+        updateAnimationRandomDelay();
+    }, randomDelay);
+}
+
+function triggerSepcialAction(specialName) {
+    if (specialName == "unhappy") {
+        playAnimation("word");
+
+        // override the current animation, and cancel the current set time out, 
+        if (randomAnimHandle !== null) {
+            clearTimeout(randomAnimHandle);
+        }
+        // reset the next random animation again, for the just resetted handle
+        updateAnimationRandomDelay();
+
+    } else if (specialName == "rage") {
+
+    }
+}
+
+
+
+playAnimation(get_random_action());
+updateAnimationRandomDelay()
+
+
