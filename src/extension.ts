@@ -114,18 +114,6 @@ export function activate(context: vscode.ExtensionContext) {
         })
     );
 
-    // context.subscriptions.push(
-    //     vscode.commands.registerCommand("extension.trackKeyDown", () => {
-    //         keydownCount++;
-    //         copyCredit = Math.ceil(keydownCount / 10);
-
-    //         if (copyCredit !== prevCopyCredit) {
-    //             prevCopyCredit = copyCredit;
-    //             vscode.window.showInformationMessage(`Your Copy Credit: ${copyCredit}`);
-    //         }
-    //     })
-    // );
-
     vscode.workspace.onDidChangeTextDocument((event) => {
         const addedLines = event.contentChanges.reduce((count, change) => {
             const line = change.text.split("\n");
@@ -186,26 +174,16 @@ class ColorsViewProvider implements vscode.WebviewViewProvider {
             <title>Cat Coding</title>
         </head>
 		
-        <body>
-			<h1 class="copyCredit">Your copy credit: 1</h1>
+        <body style="color:${isDarkColorTheme() ? "white" : "black"}">
+			<div class="container">
+				<h1 class="title" style="font-weight: bold">Copy 📋 Cat 🐱</h1>
+				<h2 class="copyCredit">Your copy credit 🤫 = 1</h2>
+				<h2 class="copyCounter" style="font-size: 14px">Times tried to copy externally 😾 = 0</h2>
 
-            <h2 class="copyCounter">You copied 0 time</h2>
-            
-            
-			<div id="buttons">
-				<!--
-				<button class="gdx" onclick="triggerSpecialAction('unhappy')">是狗东西</button>
-				<button onclick="playAnimation('look_around')">Look Around</button>
-                <button onclick="playAnimation('lay_down')">Lay Down</button>
-				<button onclick="playAnimation('walk_left')">Walk Left</button>
-				<button onclick="playAnimation('walk_right')">Walk Right</button>
-				<button onclick="playAnimation('walk_up')">Walk Up</button>
-				<button onclick="playAnimation('walk_down')">Walk Down</button>
-                -->
+				
+
+				<canvas id="anim_canvas"/>
 			</div>
-            
-
-			<canvas id="anim_canvas"/>
 
 			<script nonce="${nonce1}" src="${scriptUri}"></script>
 			<script nonce="${nonce2}">
@@ -278,4 +256,26 @@ function getNonce() {
         text += possible.charAt(Math.floor(Math.random() * possible.length));
     }
     return text;
+}
+
+function isDarkColorTheme(): boolean {
+    const colorTheme = vscode.workspace.getConfiguration("workbench").get<string>("colorTheme");
+    if (colorTheme) {
+        const darkThemes = [
+            "Dark",
+            "Dracula",
+            "Monokai",
+            "Night Owl",
+            "Palenight",
+            "Tomorrow Night Blue",
+            "Tomorrow Night Bright",
+            "Tomorrow Night Eighties",
+            "GitHub Dark",
+            "One Dark Pro",
+            "Atom One Dark",
+            "Atom One Dark Reasonable",
+        ];
+        return darkThemes.some((theme) => colorTheme.includes(theme));
+    }
+    return false; // Default to false if theme detection fails
 }
