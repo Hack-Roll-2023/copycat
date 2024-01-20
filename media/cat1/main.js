@@ -3,9 +3,27 @@
 const canvas = document.getElementById("anim_canvas");
 const ctx = canvas.getContext("2d");
 
-const spriteImg = new Image();
 
-spriteImg.src = window.imgUri;
+
+function getRandomCat() {
+    const catNames = [
+        "black_1.png",
+        "blue_1.png",
+        "calico_0.png",
+        "creme_0.png",
+        "creme_1.png",
+        "gold_0.png",
+        "seal_point_0.png"
+    ]
+    return catNames[Math.floor(Math.random()*catNames.length)];
+}
+
+const spriteImg = new Image();
+spriteImg.src = window.imgUri + "/" + getRandomCat();
+const unhappyImg = new Image();
+unhappyImg.src = window.imgUri + "/_cross.png";
+
+
 
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
@@ -124,7 +142,9 @@ let canvasYInc;
 
 // set interval handle
 let randomAnimHandle = null;
-
+``
+// set is range
+let isUnhappy = false;
 function animate() {
     if (animRequest !== null) {
         cancelAnimationFrame(animRequest);
@@ -150,27 +170,86 @@ function animate() {
     // console.log(currX, currY);
 
     // Draw
-    ctx.drawImage(
-        spriteImg,
-        currY,
-        currX,
-        SPRITE_WIDTH,
-        SPRITE_HEIGHT, // this is for sprite
-        canvasPosY,
-        canvasPosX,
-        2 * SPRITE_WIDTH,
-        2 * SPRITE_HEIGHT // this is for canvas
-    );
+    if (!isUnhappy) {
+        ctx.drawImage(
+            spriteImg,
+            currY,
+            currX,
+            SPRITE_WIDTH,
+            SPRITE_HEIGHT, // this is for sprite
+            canvasPosY,
+            canvasPosX,
+            2 * SPRITE_WIDTH,
+            2 * SPRITE_HEIGHT // this is for canvas
+        );
+    } else if (isUnhappy) {
+        ctx.drawImage(
+            spriteImg,
+            8 * 32,
+            33,
+            SPRITE_WIDTH,
+            SPRITE_HEIGHT, // this is for sprite
+            canvasPosY,
+            canvasPosX,
+            2 * SPRITE_WIDTH,
+            2 * SPRITE_HEIGHT // this is for canvas
+        );
+
+        ctx.drawImage(
+            unhappyImg,
+            0,
+            0,
+            SPRITE_WIDTH,
+            SPRITE_HEIGHT, // this is for sprite
+            canvasPosY - 2 * SPRITE_WIDTH,
+            canvasPosX,
+            2 * SPRITE_WIDTH,
+            2 * SPRITE_HEIGHT // this is for canvas
+        );
+        ctx.drawImage(
+            unhappyImg,
+            0,
+            0,
+            SPRITE_WIDTH,
+            SPRITE_HEIGHT, // this is for sprite
+            canvasPosY + 2 * SPRITE_WIDTH,
+            canvasPosX,
+            2 * SPRITE_WIDTH,
+            2 * SPRITE_HEIGHT // this is for canvas
+        );
+        ctx.drawImage(
+            unhappyImg,
+            0,
+            0,
+            SPRITE_WIDTH,
+            SPRITE_HEIGHT, // this is for sprite
+            canvasPosY,
+            canvasPosX - 2 * SPRITE_WIDTH,
+            2 * SPRITE_WIDTH,
+            2 * SPRITE_HEIGHT // this is for canvas
+        );
+        ctx.drawImage(
+            unhappyImg,
+            0,
+            0,
+            SPRITE_WIDTH,
+            SPRITE_HEIGHT, // this is for sprite
+            canvasPosY,
+            canvasPosX + 2 * SPRITE_WIDTH,
+            2 * SPRITE_WIDTH,
+            2 * SPRITE_HEIGHT // this is for canvas
+        );        
+    }
 
     currFrame++;
 
-    // update
-    if (canvasXInc !== null) {
+    // update 
+    if (!isUnhappy) {
         canvasPosX += canvasXInc;
     } else {
         canvasPosX += Math.random() * 10 - 5;
     }
-    if (canvasYInc !== null) {
+    if (!isUnhappy) {
         canvasPosY += canvasYInc;
     } else {
         canvasPosY += Math.random() * 10 - 5;
@@ -197,7 +276,6 @@ function animate() {
 }
 
 function playAnimation(newAnimName) {
-    console.table("hi bitch", newAnimName);
     // Reset animation and save params
     let animName = newAnimName;
     startX = sprite_details[animName]["start_x"];
@@ -210,6 +288,8 @@ function playAnimation(newAnimName) {
 
     canvasXInc = sprite_details[animName]["x_inc"];
     canvasYInc = sprite_details[animName]["y_inc"];
+
+    isUnhappy = animName == "word";
 
     animate();
 }
@@ -250,17 +330,24 @@ function updateAnimationRandomDelay() {
     }, randomDelay);
 }
 
-function triggerSpecialAction(specialName) {
-    if (specialName === "unhappy") {
-        playAnimation("word");
+function triggerSepcialAction(specialName) {
+    if (specialName == "unhappy") {
+        isUnhappy = true;
+        setTimeout(function() {
+            console.log("The cat has been angry for 5 sec.");
+            isUnhappy = false;
+        }, 5000);
+        // playAnimation("word");
 
-        // override the current animation, and cancel the current set time out,
-        if (randomAnimHandle !== null) {
-            clearTimeout(randomAnimHandle);
-        }
-        // reset the next random animation again, for the just resetted handle
-        updateAnimationRandomDelay();
-    } else if (specialName === "rage") {
+        // // override the current animation, and cancel the current set time out, 
+        // if (randomAnimHandle !== null) {
+        //     clearTimeout(randomAnimHandle);
+        // }
+        // // reset the next random animation again, for the just resetted handle
+        // updateAnimationRandomDelay();
+
+    } else if (specialName == "rage") {
+
     }
 }
 
