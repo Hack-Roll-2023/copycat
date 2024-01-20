@@ -1,8 +1,8 @@
 {
     "name": "copycat",
-    "displayName": "copycat",
+    "displayName": "CopyCat",
     "description": "Don't be a copycat, write your own code",
-    "version": "0.0.1",
+    "version": "1.0.0",
     "engines": {
         "vscode": "^1.85.0"
     },
@@ -17,16 +17,8 @@
                 {
                     "type": "webview",
                     "id": "copycat.colorsView",
-                    "name": "Copycat Colors"
-                }
-            ]
-        },
-        "menus": {
-            "view/title": [
-                {
-                    "command": "copycat.clearColors",
-                    "group": "navigation",
-                    "when": "view == copycat.colorsView"
+                    "name": "Copycat",
+                    "icon" : "/media/copycat.svg"
                 }
             ]
         },
@@ -46,26 +38,6 @@
             {
                 "command": "copycat.undo",
                 "title": "Copycat: Undo"
-            },
-            {
-                "command": "copycat.helloWorld",
-                "title": "Hello World"
-            },
-            {
-                "command": "copycat.addColor",
-                "category": "Copycat Colors",
-                "title": "Add Color"
-            },
-            {
-                "command": "copycat.clearColors",
-                "category": "Copycat Colors",
-                "title": "Clear Colors",
-                "icon": "$(clear-all)"
-            },
-            {
-                "command": "copycat.addCopyCounter",
-                "category": "Copycat Add Copy Count",
-                "title": "Add Copy Count"
             }
         ],
         "keybindings": [
