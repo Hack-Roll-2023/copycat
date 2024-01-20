@@ -1,76 +1,154 @@
 {
-  "name": "copycat",
-  "displayName": "copycat",
-  "description": "Don't be a copycat, write your own code",
-  "version": "0.0.1",
-  "engines": {
-    "vscode": "^1.85.0"
-  },
-  "categories": [
-    "Other"
-  ],
-  "activationEvents": [],
-  "main": "./dist/extension.js",
-  "contributes": {
-    "views": {
-			"explorer": [
-				{
-					"type": "webview",
-					"id": "copycat.colorsView",
-					"name": "Copycat Colors"
-				}
-			]
-		},
-    "menus": {
-			"view/title": [
-				{
-					"command": "copycat.clearColors",
-					"group": "navigation",
-					"when": "view == copycat.colorsView"
-				}
-			]
-		},
-    "commands": [
-      {
-        "command": "copycat.helloWorld",
-        "title": "Hello World"
+    "name": "copycat",
+    "displayName": "copycat",
+    "description": "Don't be a copycat, write your own code",
+    "version": "0.0.1",
+    "engines": {
+        "vscode": "^1.85.0"
+    },
+    "categories": [
+        "Other"
+    ],
+    "activationEvents": [],
+    "main": "./dist/extension.js",
+    "contributes": {
+      "views": {
+        "explorer": [
+          {
+            "type": "webview",
+            "id": "copycat.colorsView",
+            "name": "Copycat Colors"
+          }
+        ]
       },
-      {
-				"command": "copycat.addColor",
-				"category": "Copycat Colors",
-				"title": "Add Color"
-			},
-			{
-				"command": "copycat.clearColors",
-				"category": "Copycat Colors",
-				"title": "Clear Colors",
-				"icon": "$(clear-all)"
-			}
-    ]
-  },
-  "scripts": {
-    "vscode:prepublish": "pnpm run package",
-    "compile": "webpack",
-    "watch": "webpack --watch",
-    "package": "webpack --mode production --devtool hidden-source-map",
-    "compile-tests": "tsc -p . --outDir out",
-    "watch-tests": "tsc -p . -w --outDir out",
-    "pretest": "pnpm run compile-tests && pnpm run compile && pnpm run lint",
-    "lint": "eslint src --ext ts",
-    "test": "vscode-test"
-  },
-  "devDependencies": {
-    "@types/vscode": "^1.85.0",
-    "@types/mocha": "^10.0.6",
-    "@types/node": "18.x",
-    "@typescript-eslint/eslint-plugin": "^6.15.0",
-    "@typescript-eslint/parser": "^6.15.0",
-    "eslint": "^8.56.0",
-    "typescript": "^5.3.3",
-    "ts-loader": "^9.5.1",
-    "webpack": "^5.89.0",
-    "webpack-cli": "^5.1.4",
-    "@vscode/test-cli": "^0.0.4",
-    "@vscode/test-electron": "^2.3.8"
-  }
+      "menus": {
+        "view/title": [
+          {
+            "command": "copycat.clearColors",
+            "group": "navigation",
+            "when": "view == copycat.colorsView"
+          }
+        ]
+      },
+        "commands": [
+            {
+                "command": "copycat.paste",
+                "title": "Copycat: Paste"
+            },
+            {
+                "command": "copycat.copy",
+                "title": "Copycat: Copy"
+            },
+            {
+                "command": "copycat.cut",
+                "title": "Copycat: Cut"
+            },
+            {
+                "command": "copycat.undo",
+                "title": "Copycat: Undo"
+            },
+            {
+              "command": "copycat.helloWorld",
+              "title": "Hello World"
+            },
+            {
+              "command": "copycat.addColor",
+              "category": "Copycat Colors",
+              "title": "Add Color"
+            },
+            {
+              "command": "copycat.clearColors",
+              "category": "Copycat Colors",
+              "title": "Clear Colors",
+              "icon": "$(clear-all)"
+            }
+        ],
+        "keybindings": [
+            {
+                "command": "copycat.paste",
+                "key": "ctrl+v",
+                "mac": "cmd+v",
+                "when": "editorTextFocus && !editorReadonly"
+            },
+            {
+                "command": "copycat.copy",
+                "key": "ctrl+c",
+                "mac": "cmd+c",
+                "when": "editorTextFocus && !editorReadonly"
+            },
+            {
+                "command": "copycat.cut",
+                "key": "ctrl+x",
+                "mac": "cmd+x",
+                "when": "editorTextFocus && !editorReadonly"
+            },
+            {
+                "command": "copycat.undo",
+                "key": "ctrl-z",
+                "mac": "cmd+z",
+                "when": "editorTextFocus && !editorReadonly"
+            }
+        ],
+        "configuration": {
+            "type": "object",
+            "title": "Copycat",
+            "properties": {
+                "copycat.pasteCommand": {
+                    "type": "string",
+                    "markdownDescription": "The command to use if there is no current selection when pasting",
+                    "default": "editor.action.clipboardPasteAction"
+                },
+                "copycat.copyCommand": {
+                    "type": "string",
+                    "markdownDescription": "The command to use to copy the selection",
+                    "default": "editor.action.clipboardCopyAction"
+                },
+                "copycat.cutCommand": {
+                    "type": "string",
+                    "markdownDescription": "The command to use to cut the selection",
+                    "default": "editor.action.clipboardCutAction"
+                },
+                "copycat.undoCommand": {
+                    "type": "string",
+                    "markdownDescription": "The command to use to undo the last operation",
+                    "default": "undo"
+                },
+                "copycat.retainThroughDuplicateSelections": {
+                    "type": "boolean",
+                    "markdownDescription": "If true, and the same text is selected subsequently when pasting, the originally selected text is inserted again. This allows multiple replacements while still keeping the originally selected text.",
+                    "default": true
+                },
+                "copycat.debug": {
+                    "type": "boolean",
+                    "markdownDescription": "Create a debug channel in the output panel.",
+                    "default": false
+                }
+            }
+        }
+    },
+    "scripts": {
+        "vscode:prepublish": "pnpm run package",
+        "compile": "webpack",
+        "watch": "webpack --watch",
+        "package": "webpack --mode production --devtool hidden-source-map",
+        "compile-tests": "tsc -p . --outDir out",
+        "watch-tests": "tsc -p . -w --outDir out",
+        "pretest": "pnpm run compile-tests && pnpm run compile && pnpm run lint",
+        "lint": "eslint src --ext ts",
+        "test": "vscode-test"
+    },
+    "devDependencies": {
+        "@types/vscode": "^1.85.0",
+        "@types/mocha": "^10.0.6",
+        "@types/node": "18.x",
+        "@typescript-eslint/eslint-plugin": "^6.15.0",
+        "@typescript-eslint/parser": "^6.15.0",
+        "eslint": "^8.56.0",
+        "typescript": "^5.3.3",
+        "ts-loader": "^9.5.1",
+        "webpack": "^5.89.0",
+        "webpack-cli": "^5.1.4",
+        "@vscode/test-cli": "^0.0.4",
+        "@vscode/test-electron": "^2.3.8"
+    }
 }
