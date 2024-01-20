@@ -178,7 +178,7 @@ class ColorsViewProvider implements vscode.WebviewViewProvider {
         const styleMainUri = webview.asWebviewUri(vscode.Uri.joinPath(this._extensionUri, "media", "main.css"));
 
         const catScriptUri = webview.asWebviewUri(vscode.Uri.joinPath(this._extensionUri, "media", "cat1", "main.js"));
-        const catImgUri = webview.asWebviewUri(vscode.Uri.joinPath(this._extensionUri, "media", "cat1", "media", "black_1.png"));
+        const catImgUri = webview.asWebviewUri(vscode.Uri.joinPath(this._extensionUri, "media", "cat1", "media")); //, "black_1.png"));
         // Do the same for the stylesheet.
 
         // Use a nonce to only allow a specific script to be run.
