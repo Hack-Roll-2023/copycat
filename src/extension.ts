@@ -71,11 +71,7 @@ export function activate(context: vscode.ExtensionContext) {
                     console.log("copyCredit", copyCredit);
                     if (copyCredit > 0) {
                         console.log("here 1");
-                        // vscode.commands.executeCommand(pasteCommand).then(() => {
-                        //     copyCredit -= 1;
-                        //     lineCount = 0;
-                        //     provider.updateCopyCredit(copyCredit);
-                        // });
+
                         vscode.commands.executeCommand(pasteCommand);
                         copyCredit -= 1;
                         lineCount = 0;
@@ -87,7 +83,8 @@ export function activate(context: vscode.ExtensionContext) {
                         copyCount += 1;
 
                         provider.addCopyCounter(copyCount);
-                        vscode.window.showInformationMessage(`Fk off copycat! ${systemClipboard}`);
+                        vscode.window.showInformationMessage("You copycat! Write your own code!");
+                        provider.triggerSpecialAction("unhappy");
                     }
                 }
             });
@@ -130,13 +127,6 @@ export function activate(context: vscode.ExtensionContext) {
     // );
 
     vscode.workspace.onDidChangeTextDocument((event) => {
-        // You can add more sophisticated logic to filter specific keydown events
-        // For simplicity, we're counting any change in a text document as a keydown
-        // if (event.contentChanges.length > 0) {
-        //     vscode.commands.executeCommand("extension.trackKeyDown");
-        //     console.log("keydown", event.contentChanges.length, keydownCount);
-        // }
-
         const addedLines = event.contentChanges.reduce((count, change) => {
             const line = change.text.split("\n");
 
@@ -147,11 +137,9 @@ export function activate(context: vscode.ExtensionContext) {
 
         lineCount += addedLines;
 
-        // copyCredit = Math.ceil(lineCount / 10);
         if (lineCount % 10 === 0) {
             copyCredit += Math.ceil(lineCount / 10);
 
-            // prevCopyCredit = copyCredit;
             lineCount = 0;
             provider.updateCopyCredit(copyCredit);
             vscode.window.showInformationMessage(`Your Copy Credit: ${copyCredit}`);
@@ -199,13 +187,14 @@ class ColorsViewProvider implements vscode.WebviewViewProvider {
         </head>
 		
         <body>
-            <h1 class="copyCounter">You copied 0 time</h1>
-            <h2 class="copyCredit">Your copy credit: 1</h2>
+			<h1 class="copyCredit">Your copy credit: 1</h1>
+
+            <h2 class="copyCounter">You copied 0 time</h2>
             
             
 			<div id="buttons">
-				<button onclick="triggerSepcialAction('unhappy')">是狗东西</button>
-                <!--
+				<!--
+				<button class="gdx" onclick="triggerSpecialAction('unhappy')">是狗东西</button>
 				<button onclick="playAnimation('look_around')">Look Around</button>
                 <button onclick="playAnimation('lay_down')">Lay Down</button>
 				<button onclick="playAnimation('walk_left')">Walk Left</button>
@@ -272,6 +261,12 @@ class ColorsViewProvider implements vscode.WebviewViewProvider {
     public updateCopyCredit(credit: number) {
         if (this._view) {
             this._view.webview.postMessage({ type: "updateCopyCredit", value: credit });
+        }
+    }
+
+    public triggerSpecialAction(mood: "unhappy" | "rage") {
+        if (this._view) {
+            this._view.webview.postMessage({ type: "special", value: mood });
         }
     }
 }
