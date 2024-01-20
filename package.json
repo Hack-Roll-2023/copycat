@@ -12,6 +12,24 @@
     "activationEvents": [],
     "main": "./dist/extension.js",
     "contributes": {
+      "views": {
+        "explorer": [
+          {
+            "type": "webview",
+            "id": "copycat.colorsView",
+            "name": "Copycat Colors"
+          }
+        ]
+      },
+      "menus": {
+        "view/title": [
+          {
+            "command": "copycat.clearColors",
+            "group": "navigation",
+            "when": "view == copycat.colorsView"
+          }
+        ]
+      },
         "commands": [
             {
                 "command": "copycat.paste",
@@ -28,6 +46,21 @@
             {
                 "command": "copycat.undo",
                 "title": "Copycat: Undo"
+            },
+            {
+              "command": "copycat.helloWorld",
+              "title": "Hello World"
+            },
+            {
+              "command": "copycat.addColor",
+              "category": "Copycat Colors",
+              "title": "Add Color"
+            },
+            {
+              "command": "copycat.clearColors",
+              "category": "Copycat Colors",
+              "title": "Clear Colors",
+              "icon": "$(clear-all)"
             }
         ],
         "keybindings": [
