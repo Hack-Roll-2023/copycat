@@ -175,12 +175,13 @@ class ColorsViewProvider implements vscode.WebviewViewProvider {
         </head>
 		
         <body style="color:${isDarkColorTheme() ? "white" : "black"}">
+			<button class="hide">Hide text</button>
 			<div class="container">
-				<h1 class="title" style="font-weight: bold">Copy 📋 Cat 🐱</h1>
-				<h2 class="copyCredit">Your copy credit 🤫 = 1</h2>
-				<h2 class="copyCounter" style="font-size: 14px">Illegal external copy 😾 = 0</h2>
-
-				
+				<div class="texts">
+					<h1 class="title" style="font-weight: bold">Copy 📋 Cat 🐱</h1>
+					<h2 class="copyCredit">Your copy credit 🤫 = 1</h2>
+					<h2 class="copyCounter" style="font-size: 14px">Illegal external copy 😾 = 0</h2>
+				</div>
 
 				<canvas id="anim_canvas"/>
 			</div>

@@ -130,7 +130,7 @@ let canvasYInc;
 
 // set interval handle
 let randomAnimHandle = null;
-``;
+
 // set is range
 let isUnhappy = false;
 function animate() {
