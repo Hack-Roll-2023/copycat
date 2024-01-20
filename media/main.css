@@ -1,5 +1,9 @@
 body {
 	background-color: transparent;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
 }
 
 .color-list {
@@ -37,4 +41,28 @@ body {
 	display: block;
 	border: none;
 	margin: 0 auto;
+}
+
+#anim_canvas {
+    border: 1px solid black;
+	width: 600px;
+    height: 600px;
+    margin: 10px;
+    /*background-color: blue;*/
+}
+
+#cat {
+    width: 100px; /* Set the width of each frame */
+    height: 100px; /* Set the height of each frame */
+    /*background-image: url('cat_sprite_sheet.png'); !* Replace with your sprite sheet *!*/
+    background-size: cover;
+    transition: background-position 0.1s steps(10); /* Adjust the steps based on the number of frames in your sprite sheet */
+}
+
+#buttons {
+	background-color:black;
+}
+
+button {
+    margin: 5px;
 }

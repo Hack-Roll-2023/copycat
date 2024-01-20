@@ -117,8 +117,14 @@ class ColorsViewProvider implements vscode.WebviewViewProvider {
 		const styleVSCodeUri = webview.asWebviewUri(vscode.Uri.joinPath(this._extensionUri, "media", "vscode.css"));
 		const styleMainUri = webview.asWebviewUri(vscode.Uri.joinPath(this._extensionUri, "media", "main.css"));
 
+
+		const catScriptUri = webview.asWebviewUri(vscode.Uri.joinPath(this._extensionUri, "media", "cat1", "main.js"));
+
+		// Do the same for the stylesheet.
+
 		// Use a nonce to only allow a specific script to be run.
-		const nonce = getNonce();
+		const nonce1 = getNonce();
+		const nonce2 = getNonce();
 
 		return `<!DOCTYPE html>
         <html lang="en">
@@ -130,16 +136,27 @@ class ColorsViewProvider implements vscode.WebviewViewProvider {
             <link href="${styleVSCodeUri}" rel="stylesheet">
             <link href="${styleMainUri}" rel="stylesheet">
 
-
             <title>Cat Coding</title>
         </head>
+		<script nonce="${nonce1}" src="${scriptUri}"></script>
+		<script nonce="${nonce2}" src="${catScriptUri}"></script>
         <body>
             <h1 class="copyCounter">You copied 0 time</h1>
-            <img src="https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif" width="300" />
+
             
-            <script nonce="${nonce}" src="${scriptUri}"></script>
+			<div id="buttons">
+				<button onclick="playAnimation('sit')">Sit</button>
+				<button onclick="playAnimation('look_around')">Look Around</button>
+				<button onclick="playAnimation('walk_left')">Walk Left</button>
+				<button onclick="playAnimation('walk_right')">Walk Right</button>
+				<button onclick="playAnimation('walk_up')">Walk Up</button>
+				<button onclick="playAnimation('walk_down')">Walk Down</button>
+			</div>
+
+			<canvas id="anim_canvas"/>
 
         </body>
+			
         </html>`;
 	}
 
