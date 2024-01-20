@@ -91,6 +91,19 @@ const sprite_details = {
         x_inc: 1,
         y_inc: 0,
     },
+
+
+    // special
+    word: {
+        start_x: 0,
+        start_y: 32,
+        sprite_num: 4,
+        is_looping: true,
+        frames_per_sprite: 12,
+        custom_idx_lst: [],
+        x_inc: null,
+        y_inc: null,
+    }
 };
 
 // parameters
@@ -136,6 +149,7 @@ function animate() {
     // Calculate locations based on idx
     const currX = startX + 32 * Math.floor(spriteIdx / 4);
     const currY = startY + 32 * (spriteIdx % 4);
+    // console.log(currX, currY);
 
     // Draw
     ctx.drawImage(
@@ -153,7 +167,17 @@ function animate() {
     currFrame++;
 
     // update 
-    canvasPosX += canvasXInc;
+    if (canvasXInc !== null) {
+        canvasPosX += canvasXInc;
+    } else {
+        canvasPosX += Math.random() * 10 - 5;
+    }
+    if (canvasYInc !== null) {
+        canvasPosY += canvasYInc;
+    } else {
+        canvasPosY += Math.random() * 10 - 5;
+    }
+    
     if (canvasPosX < 0) {
         canvasPosX = 0;
         playAnimation("walk_down");
@@ -220,16 +244,33 @@ function updateAnimationRandomDelay() {
     let randomDelay = Math.random() * 10000 + 5000; // 5~15 sec
   
     // Call myFunction after the random delay
-    setTimeout(function() {
+    randomAnimHandle = setTimeout(function() {
         console.log("Gonna do this for", randomDelay/1000, "sec");
         playAnimation(get_random_action());
         
-        randomAnimHandle = updateAnimationRandomDelay();
+        updateAnimationRandomDelay();
     }, randomDelay);
 }
 
+function triggerSepcialAction(specialName) {
+    if (specialName == "unhappy") {
+        playAnimation("word");
+
+        // override the current animation, and cancel the current set time out, 
+        if (randomAnimHandle !== null) {
+            clearTimeout(randomAnimHandle);
+        }
+        // reset the next random animation again, for the just resetted handle
+        updateAnimationRandomDelay();
+
+    } else if (specialName == "rage") {
+
+    }
+}
+
+
 
 playAnimation(get_random_action());
-randomAnimHandle = updateAnimationRandomDelay()
+updateAnimationRandomDelay()
 
 
