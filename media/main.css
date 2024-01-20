@@ -1,4 +1,5 @@
 body {
+	position: relative;
 	background-color: transparent;
 	display: flex;
 	justify-content: center;
@@ -44,25 +45,28 @@ body {
 }
 
 #anim_canvas {
-    border: 1px solid black;
-	width: 600px;
-    height: 600px;
+    border: 1px solid white;
+	/* width: 600px;
+    height: 600px; */
+	width: 100%;
+	height: 100%;
     margin: 10px;
-    /*background-color: blue;*/
-}
-
-#cat {
-    width: 100px; /* Set the width of each frame */
-    height: 100px; /* Set the height of each frame */
-    /*background-image: url('cat_sprite_sheet.png'); !* Replace with your sprite sheet *!*/
-    background-size: cover;
-    transition: background-position 0.1s steps(10); /* Adjust the steps based on the number of frames in your sprite sheet */
 }
 
 #buttons {
-	background-color:black;
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	row-gap: 2px;
+	column-gap: 2px;
+	justify-content: center;
+	align-items: center;
+	margin: 0;
+	width: 100%;
 }
 
 button {
-    margin: 5px;
+    /* margin: 5px; */
+	padding: 10px;
+    font-size: 16px;
+	width: 100%
 }
