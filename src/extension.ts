@@ -10,56 +10,56 @@ let copyCount = 0;
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
-    function copyToClipboard() {
-        var editor = vscode.window.activeTextEditor;
-        var selection = editor!.selection;
+	function copyToClipboard() {
+		var editor = vscode.window.activeTextEditor;
+		var selection = editor!.selection;
 
-        var s = selection.start;
-        var e = selection.end;
+		var s = selection.start;
+		var e = selection.end;
 
-        var hasSelection = s.line !== e.line || s.character !== e.character;
+		var hasSelection = s.line !== e.line || s.character !== e.character;
 
-        if (hasSelection && editor!.selections.length === 1) {
-            // previousClipboard = clipboard;
-            clipboard = editor!.document.getText(new vscode.Range(s, e));
-            previousClipboard = clipboard;
-        }
-    }
+		if (hasSelection && editor!.selections.length === 1) {
+			// previousClipboard = clipboard;
+			clipboard = editor!.document.getText(new vscode.Range(s, e));
+			previousClipboard = clipboard;
+		}
+	}
 
-    context.subscriptions.push(
-        vscode.commands.registerCommand("copycat.copy", function () {
-            copyToClipboard();
-            var copyCommand = vscode.workspace.getConfiguration("copycat").copyCommand;
-            vscode.commands.executeCommand(copyCommand);
-        })
-    );
+	context.subscriptions.push(
+		vscode.commands.registerCommand("copycat.copy", function () {
+			copyToClipboard();
+			var copyCommand = vscode.workspace.getConfiguration("copycat").copyCommand;
+			vscode.commands.executeCommand(copyCommand);
+		})
+	);
 
-    context.subscriptions.push(
-        vscode.commands.registerCommand("copycat.cut", function () {
-            copyToClipboard();
-            var cutCommand = vscode.workspace.getConfiguration("copycat").cutCommand;
-            vscode.commands.executeCommand(cutCommand);
-        })
-    );
+	context.subscriptions.push(
+		vscode.commands.registerCommand("copycat.cut", function () {
+			copyToClipboard();
+			var cutCommand = vscode.workspace.getConfiguration("copycat").cutCommand;
+			vscode.commands.executeCommand(cutCommand);
+		})
+	);
 
-    context.subscriptions.push(
-        vscode.commands.registerCommand("copycat.undo", function () {
-            if (previousClipboard) {
-                clipboard = previousClipboard;
-                vscode.env.clipboard.writeText(previousClipboard);
-                previousClipboard = undefined;
-            }
-            var undoCommand = vscode.workspace.getConfiguration("copycat").undoCommand;
+	context.subscriptions.push(
+		vscode.commands.registerCommand("copycat.undo", function () {
+			if (previousClipboard) {
+				clipboard = previousClipboard;
+				vscode.env.clipboard.writeText(previousClipboard);
+				previousClipboard = undefined;
+			}
+			var undoCommand = vscode.workspace.getConfiguration("copycat").undoCommand;
 
-            vscode.commands.executeCommand(undoCommand);
-        })
-    );
+			vscode.commands.executeCommand(undoCommand);
+		})
+	);
 
-    context.subscriptions.push(
-        vscode.commands.registerCommand("copycat.paste", function () {
-            vscode.env.clipboard.readText().then(function (systemClipboard) {
-                var pasteCommand = vscode.workspace.getConfiguration("copycat").pasteCommand;
-                var copyCommand = vscode.workspace.getConfiguration("copycat").copyCommand;
+	context.subscriptions.push(
+		vscode.commands.registerCommand("copycat.paste", function () {
+			vscode.env.clipboard.readText().then(function (systemClipboard) {
+				const pasteCommand = vscode.workspace.getConfiguration("copycat").pasteCommand;
+				const copyCommand = vscode.workspace.getConfiguration("copycat").copyCommand;
 
                 if (clipboard === systemClipboard) {
                     vscode.commands.executeCommand(pasteCommand);
