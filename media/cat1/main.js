@@ -1,12 +1,11 @@
-const path = require("path");
-
+// const path = require("path");
 const catContainer = document.getElementById('cat-container');
 const canvas = document.getElementById("anim_canvas");
 const ctx = canvas.getContext("2d");
 
 const spriteImg = new Image();
 
-spriteImg.src = "media/black_1.png";
+spriteImg.src = window.imgUri;
 
 const CANVAS_WIDTH = canvas.width = 600;
 const CANVAS_HEIGHT = canvas.height = 600;
@@ -132,7 +131,7 @@ function animate() {
     ctx.drawImage(
         spriteImg,
         currY, currX, SPRITE_WIDTH, SPRITE_HEIGHT,          // this is for sprite
-        canvasPosY, canvasPosX, 5*SPRITE_WIDTH, 5*SPRITE_HEIGHT                   // this is for canvas
+        canvasPosY, canvasPosX, 5 * SPRITE_WIDTH, 5 * SPRITE_HEIGHT                   // this is for canvas
     );
     currFrame++;
     canvasPosX = Math.min(

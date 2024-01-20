@@ -119,7 +119,7 @@ class ColorsViewProvider implements vscode.WebviewViewProvider {
 
 
 		const catScriptUri = webview.asWebviewUri(vscode.Uri.joinPath(this._extensionUri, "media", "cat1", "main.js"));
-
+		const catImgUri = webview.asWebviewUri(vscode.Uri.joinPath(this._extensionUri, "media", "cat1", "media", "black_1.png"));
 		// Do the same for the stylesheet.
 
 		// Use a nonce to only allow a specific script to be run.
@@ -138,8 +138,7 @@ class ColorsViewProvider implements vscode.WebviewViewProvider {
 
             <title>Cat Coding</title>
         </head>
-		<script nonce="${nonce1}" src="${scriptUri}"></script>
-		<script nonce="${nonce2}" src="${catScriptUri}"></script>
+		
         <body>
             <h1 class="copyCounter">You copied 0 time</h1>
 
@@ -155,6 +154,11 @@ class ColorsViewProvider implements vscode.WebviewViewProvider {
 
 			<canvas id="anim_canvas"/>
 
+			<script nonce="${nonce1}" src="${scriptUri}"></script>
+			<script nonce="${nonce2}">
+    			window.imgUri = "${catImgUri}";
+			</script>
+			<script nonce="${nonce2}" src="${catScriptUri}"></script>
         </body>
 			
         </html>`;
