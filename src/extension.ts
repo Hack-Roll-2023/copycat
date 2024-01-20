@@ -148,7 +148,7 @@ export function activate(context: vscode.ExtensionContext) {
         lineCount += addedLines;
 
         // copyCredit = Math.ceil(lineCount / 10);
-        if (lineCount % 10 == 0) {
+        if (lineCount % 10 === 0) {
             copyCredit += Math.ceil(lineCount / 10);
 
             // prevCopyCredit = copyCredit;
