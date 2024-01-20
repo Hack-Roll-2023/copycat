@@ -132,13 +132,13 @@ function animate() {
         SPRITE_HEIGHT, // this is for sprite
         canvasPosY,
         canvasPosX,
-        5 * SPRITE_WIDTH,
-        5 * SPRITE_HEIGHT // this is for canvas
+        2 * SPRITE_WIDTH,
+        2 * SPRITE_HEIGHT // this is for canvas
     );
 
     currFrame++;
-    canvasPosX = Math.min(Math.max(0, canvasPosX + canvasXInc), canvas.height - 5 * SPRITE_WIDTH);
-    canvasPosY = Math.min(Math.max(0, canvasPosY + canvasYInc), canvas.width - 5 * SPRITE_HEIGHT);
+    canvasPosX = Math.min(Math.max(0, canvasPosX + canvasXInc), canvas.height - 2 * SPRITE_WIDTH);
+    canvasPosY = Math.min(Math.max(0, canvasPosY + canvasYInc), canvas.width - 2 * SPRITE_HEIGHT);
     animRequest = requestAnimationFrame(animate);
 }
 
@@ -163,5 +163,7 @@ function playAnimation(newAnimName) {
 window.addEventListener("resize", () => {
     canvas.height = window.innerHeight;
     canvas.width = window.innerWidth;
-    animate();
+    canvasPosX = Math.min(Math.max(0, canvasPosX), canvas.height - 2 * SPRITE_WIDTH);
+    canvasPosY = Math.min(Math.max(0, canvasPosY), canvas.width - 2 * SPRITE_HEIGHT);
+    // animate();
 });
