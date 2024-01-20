@@ -7,6 +7,10 @@ let previousClipboard: any;
 
 let copyCount = 0;
 
+let lineCount = 1;
+let copyCredit = 1;
+let prevCopyCredit = copyCredit;
+
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
@@ -56,23 +60,34 @@ export function activate(context: vscode.ExtensionContext) {
     );
 
     context.subscriptions.push(
-        vscode.commands.registerCommand("copycat.paste", function () {
+        vscode.commands.registerCommand("copycat.paste", () => {
             vscode.env.clipboard.readText().then(function (systemClipboard) {
                 var pasteCommand = vscode.workspace.getConfiguration("copycat").pasteCommand;
-                var copyCommand = vscode.workspace.getConfiguration("copycat").copyCommand;
+                // var copyCommand = vscode.workspace.getConfiguration("copycat").copyCommand;
 
                 if (clipboard === systemClipboard) {
                     vscode.commands.executeCommand(pasteCommand);
                 } else {
-                    // vscode.commands.executeCommand(pasteCommand);
-                    vscode.commands.executeCommand("copycat.colorsView.focus");
-                    vscode.commands.executeCommand("workbench.action.focusActiveEditorGroup");
-                    copyCount += 1;
+                    console.log("copyCredit", copyCredit);
+                    if (copyCredit > 0) {
+                        console.log("here 1");
+                        vscode.commands.executeCommand(pasteCommand).then(() => {
+                            copyCredit -= 1;
+                            lineCount = 0;
+                            provider.updateCopyCredit(copyCredit);
+                        });
+                    } else {
+                        console.log("here 2");
+                        vscode.commands.executeCommand("copycat.colorsView.focus");
+                        vscode.commands.executeCommand("workbench.action.focusActiveEditorGroup");
+                        copyCount += 1;
 
-                    provider.addCopyCounter(copyCount);
-                    vscode.window.showInformationMessage(`Fk off copycat! ${systemClipboard}`);
+                        provider.addCopyCounter(copyCount);
+                        vscode.window.showInformationMessage(`Fk off copycat! ${systemClipboard}`);
+                    }
                 }
             });
+            return null;
         })
     );
 
@@ -97,6 +112,46 @@ export function activate(context: vscode.ExtensionContext) {
             provider.addCopyCounter(count);
         })
     );
+
+    // context.subscriptions.push(
+    //     vscode.commands.registerCommand("extension.trackKeyDown", () => {
+    //         keydownCount++;
+    //         copyCredit = Math.ceil(keydownCount / 10);
+
+    //         if (copyCredit !== prevCopyCredit) {
+    //             prevCopyCredit = copyCredit;
+    //             vscode.window.showInformationMessage(`Your Copy Credit: ${copyCredit}`);
+    //         }
+    //     })
+    // );
+
+    vscode.workspace.onDidChangeTextDocument((event) => {
+        // You can add more sophisticated logic to filter specific keydown events
+        // For simplicity, we're counting any change in a text document as a keydown
+        // if (event.contentChanges.length > 0) {
+        //     vscode.commands.executeCommand("extension.trackKeyDown");
+        //     console.log("keydown", event.contentChanges.length, keydownCount);
+        // }
+
+        const addedLines = event.contentChanges.reduce((count, change) => {
+            const line = change.text.split("\n");
+
+            const linesAdded = line[line.length - 1].trim() === "" ? 0 : line.length;
+
+            return count + linesAdded;
+        }, 0);
+
+        lineCount += addedLines;
+
+        copyCredit = Math.ceil(lineCount / 10);
+
+        if (copyCredit !== prevCopyCredit) {
+            prevCopyCredit = copyCredit;
+            // lineCount = 0;
+            provider.updateCopyCredit(copyCredit);
+            vscode.window.showInformationMessage(`Your Copy Credit: ${copyCredit}`);
+        }
+    });
 }
 
 // This method is called when your extension is deactivated
@@ -140,7 +195,7 @@ class ColorsViewProvider implements vscode.WebviewViewProvider {
 		
         <body>
             <h1 class="copyCounter">You copied 0 time</h1>
-			
+            <h2 class="copyCredit">Your copy credit: 1</h2>
             
 			<div id="buttons">
 				<button onclick="playAnimation('sit')">Sit</button>
@@ -201,6 +256,12 @@ class ColorsViewProvider implements vscode.WebviewViewProvider {
     public addCopyCounter(count: number) {
         if (this._view) {
             this._view.webview.postMessage({ type: "addCopyCount", value: count });
+        }
+    }
+
+    public updateCopyCredit(credit: number) {
+        if (this._view) {
+            this._view.webview.postMessage({ type: "updateCopyCredit", value: credit });
         }
     }
 }

@@ -11,10 +11,18 @@
                 updateCopyCount(message.value);
                 break;
             }
+            case "updateCopyCredit": {
+                updateCopyCredit(message.value);
+                break;
+            }
         }
     });
 
     function updateCopyCount(copyCount) {
         document.querySelector(".copyCounter").textContent = `You copied ${copyCount} times`;
+    }
+
+    function updateCopyCredit(copyCount) {
+        document.querySelector(".copyCredit").textContent = `Your copy credit ${copyCount}`;
     }
 })();
