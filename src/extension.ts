@@ -71,11 +71,15 @@ export function activate(context: vscode.ExtensionContext) {
                     console.log("copyCredit", copyCredit);
                     if (copyCredit > 0) {
                         console.log("here 1");
-                        vscode.commands.executeCommand(pasteCommand).then(() => {
-                            copyCredit -= 1;
-                            lineCount = 0;
-                            provider.updateCopyCredit(copyCredit);
-                        });
+                        // vscode.commands.executeCommand(pasteCommand).then(() => {
+                        //     copyCredit -= 1;
+                        //     lineCount = 0;
+                        //     provider.updateCopyCredit(copyCredit);
+                        // });
+                        vscode.commands.executeCommand(pasteCommand);
+                        copyCredit -= 1;
+                        lineCount = 0;
+                        provider.updateCopyCredit(copyCredit);
                     } else {
                         console.log("here 2");
                         vscode.commands.executeCommand("copycat.colorsView.focus");
@@ -143,11 +147,12 @@ export function activate(context: vscode.ExtensionContext) {
 
         lineCount += addedLines;
 
-        copyCredit = Math.ceil(lineCount / 10);
+        // copyCredit = Math.ceil(lineCount / 10);
+        if (lineCount % 10 == 0) {
+            copyCredit += Math.ceil(lineCount / 10);
 
-        if (copyCredit !== prevCopyCredit) {
-            prevCopyCredit = copyCredit;
-            // lineCount = 0;
+            // prevCopyCredit = copyCredit;
+            lineCount = 0;
             provider.updateCopyCredit(copyCredit);
             vscode.window.showInformationMessage(`Your Copy Credit: ${copyCredit}`);
         }
