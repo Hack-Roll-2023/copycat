@@ -1,71 +1,34 @@
-# copycat README
+## Inspiration
 
-This is the README for your extension "copycat". After writing up a brief description, we recommend including the following sections.
+The inspiration behind CopyCat was to inject a fun and interactive element into the coding experience, motivating users to rely less on external sources and explore their creativity with Copilot.
 
-## Features
+## What it does
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+CopyCat, a VSCode extension, brings a playful twist to coding. It disables external copy-paste, encouraging users to leverage Copilot for generating custom code snippets. 
+It will not completely ban the copy-paste feature, user can still copy-paste their code. Meanwhile,
+users are awarded credit points for their external paste behavior. For every 10 lines of code written, the user will get one credit to use for external copy-paste!
 
-For example if there is an image subfolder under your extension project workspace:
+## How we built it
 
-\!\[feature X\]\(images/feature-x.png\)
+CopyCat was crafted using VSCode extension APIs and integrated seamlessly into the explorer panel. The cat-themed UI elements and copy-paste restrictions were implemented to enhance user engagement. 
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+## Challenges we ran into
 
-## Requirements
+It's our first time to create a VSCode extension and we are not familiar with most of the APIs. 
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+## Accomplishments that we're proud of
 
-## Extension Settings
+We have a well-established system with nice UIs and good control logic. 
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
+## What we learned
 
-For example:
+Through this project, we deepened our understanding of VSCode extension development, honed our collaboration skills, and gained insights into user behavior. Learning how to balance creativity with practicality was a valuable lesson.
 
-This extension contributes the following settings:
+## What's next for CopyCat
 
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
+The journey doesn't end here. We plan to refine CopyCat further, incorporating user feedback, expanding compatibility, and exploring additional features to make coding a truly enjoyable and unique experience. Stay tuned for more updates!
 
-## Known Issues
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
+## Acknowledgement
 
-## Release Notes
-
-Users appreciate release notes as you update your extension.
-
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
----
-
-## Following extension guidelines
-
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
-
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
-
-## Working with Markdown
-
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
-
-## For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+- Thanks for the open-source assets from [Admurin](https://pop-shop-packs.itch.io/cats-pixel-asset-pack?download) and the reference from [Gruntfuggly](https://github.com/Gruntfuggly/swap-and-paste)
