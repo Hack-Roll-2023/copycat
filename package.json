@@ -2,13 +2,14 @@
     "name": "copycat",
     "displayName": "CopyCat",
     "description": "Don't be a copycat, write your own code",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "engines": {
         "vscode": "^1.85.0"
     },
     "categories": [
         "Other"
     ],
+    "icon": "/media/CopyCat.jpeg",
     "publisher": "GDX-COPYCAT",
     "repository": "https://github.com/Hack-Roll-2023/copycat",
     "activationEvents": [],
