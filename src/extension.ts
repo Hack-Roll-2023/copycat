@@ -77,6 +77,7 @@ export function activate(context: vscode.ExtensionContext) {
                         lineCount = 0;
                         provider.updateCopyCredit(copyCredit);
                     } else {
+                        provider.updateCopyCredit(copyCredit);
                         console.log("here 2");
                         vscode.commands.executeCommand("copycat.colorsView.focus");
                         vscode.commands.executeCommand("workbench.action.focusActiveEditorGroup");
@@ -136,14 +137,14 @@ export function activate(context: vscode.ExtensionContext) {
 }
 
 // This method is called when your extension is deactivated
-export function deactivate() {}
+export function deactivate() { }
 
 class ColorsViewProvider implements vscode.WebviewViewProvider {
     public static readonly viewType = "copycat.colorsView";
 
     private _view?: vscode.WebviewView;
 
-    constructor(private readonly _extensionUri: vscode.Uri) {}
+    constructor(private readonly _extensionUri: vscode.Uri) { }
 
     private getWebviewContent(webview: vscode.Webview) {
         const scriptUri = webview.asWebviewUri(vscode.Uri.joinPath(this._extensionUri, "media", "main.js"));
@@ -179,8 +180,8 @@ class ColorsViewProvider implements vscode.WebviewViewProvider {
 			<div class="container">
 				<div class="texts">
 					<h1 class="title" style="font-weight: bold">Copy 📋 Cat 🐱</h1>
-					<h2 class="copyCredit">Your copy credit 🤫 = 1</h2>
-					<h2 class="copyCounter" style="font-size: 14px">Illegal external copy 😾 = 0</h2>
+					<h2 class="copyCredit">Your copy credit 🤫 </h2>
+					<h2 class="copyCounter" style="font-size: 14px">Illegal external copy 😾 </h2>
 				</div>
 
 				<canvas id="anim_canvas"/>
@@ -216,6 +217,17 @@ class ColorsViewProvider implements vscode.WebviewViewProvider {
                 }
             }
         });
+
+        webviewView.onDidChangeVisibility(() => {
+            if (this._view) {
+                if (this._view.visible) {
+                    this.updateCopyCredit(copyCredit);
+                    this.addCopyCounter(copyCount);
+                } else {
+                    // hide
+                }
+            }
+        })
     }
 
     public addColor() {
